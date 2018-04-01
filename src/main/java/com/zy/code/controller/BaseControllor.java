@@ -1,8 +1,7 @@
 package com.zy.code.controller;
 
-import com.schooldesign.demo.dao.*;
-import com.schooldesign.demo.entity.Teacher;
-import com.schooldesign.demo.utils.ProcessResult;
+import com.zy.code.repository.*;
+import com.zy.code.utils.ProcessResult;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
