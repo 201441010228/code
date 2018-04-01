@@ -1,0 +1,29 @@
+server:
+  port: 8080
+  servlet:
+    path: /schoolDesign
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/design
+    username: scott
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+  profiles:
+    active: dev
+  spring:
+   thymeleaf:
+    prefix: classpath:/templates/*.html
+    suffix: .html
+    mode: HTML5
+    encoding: utf-8
+    cache: false
+    servlet:
+      content-type: text/html
+
+
+
+
