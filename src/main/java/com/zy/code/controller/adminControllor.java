@@ -8,7 +8,6 @@ public class adminControllor extends BaseControllor {
 
     @GetMapping(value = "/saveUser")
     public String saveUser(){
-
         return "success";
     }
 

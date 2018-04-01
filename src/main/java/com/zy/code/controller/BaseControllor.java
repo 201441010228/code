@@ -41,6 +41,10 @@ public class BaseControllor {
     @Autowired
     protected UserRepository userRepository;
 
+    /**
+     * 设置返回前端的值
+     * @param processResult
+     */
     protected static void setReturnProcessResult(ProcessResult processResult){
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes sra = (ServletRequestAttributes) ra;
