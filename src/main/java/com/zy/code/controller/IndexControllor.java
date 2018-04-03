@@ -1,26 +1,22 @@
 package com.zy.code.controller;
 
-import org.slf4j.LoggerFactory;
+import com.zy.code.entity.User;
+import com.zy.code.utils.ProcessResult;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class IndexControllor extends BaseControllor{
 
 
-    @RequestMapping(value = "index",method = RequestMethod.GET)
-    public String index(){
-
-        return "index";
+    @RequestMapping(value = "/index",method = RequestMethod.GET)
+    public ProcessResult index(){
+        ProcessResult processResult = new ProcessResult();
+        processResult.getData().put("name","乌尔沙");
+        setReturnProcessResult(processResult);
+        return processResult;
     }
 
 

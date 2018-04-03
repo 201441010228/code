@@ -5,7 +5,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/design
+    url: jdbc:mysql://127.0.0.1:3306/design?characterEncoding=utf-8&useSSL=false
     username: scott
     password: admin
   jpa:
@@ -21,6 +21,7 @@ spring:
     mode: HTML5
     encoding: utf-8
     cache: false
+    content-type: text/html
     servlet:
       content-type: text/html
 
