@@ -1,7 +1,5 @@
 server:
   port: 8080
-  servlet:
-    path: /schoolDesign
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
@@ -14,10 +12,7 @@ spring:
     show-sql: true
   profiles:
     active: dev
-  mvc:
-    view:
-      prefix: /jsps/
-      suffix: .jsp
+
 
 
 

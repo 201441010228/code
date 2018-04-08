@@ -20,4 +20,5 @@ public class TeacherAndSubject {
 
     private Long schoolId;
 
+    private Long year;    //学年
 }

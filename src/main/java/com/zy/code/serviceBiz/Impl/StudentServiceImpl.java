@@ -1,4 +1,4 @@
-package com.zy.code.serviceBiz.serviceBizImpl;
+package com.zy.code.serviceBiz.Impl;
 
 import com.zy.code.serviceBiz.StudentService;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,5 @@
 server:
   port: 8080
-  servlet:
-    path: /schoolDesign
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
@@ -12,18 +10,20 @@ spring:
     hibernate:
       ddl-auto: create
     show-sql: true
-  profiles:
-    active: dev
+  devtools:
+    restart:
+      enabled: true
+      exclude: static
   spring:
    thymeleaf:
     prefix: classpath:/templates/*.html
     suffix: .html
     mode: HTML5
     encoding: utf-8
-    cache: false
+    cache: true
     content-type: text/html
-    servlet:
-      content-type: text/html
+
+
 
 
 

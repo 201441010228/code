@@ -40,4 +40,6 @@ public class Student {
 
     private Integer age; //年龄
 
+    private Integer year; //学年
+
 }

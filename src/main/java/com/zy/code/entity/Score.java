@@ -20,4 +20,8 @@ public class Score {
 
     private Double scoreNumber;   //分数
 
+    private Integer year;         //学年
+
+    private Integer midOrEnd;   //期中考试还是期末考试
+
 }

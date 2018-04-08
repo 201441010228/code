@@ -18,12 +18,14 @@ public class Subject {
 
     private  Long schoolId; //学校ID
 
+    private Long year;     //学年
+
     private  Double warningScore; //警告分数
 
     private  Integer level; //是否为主科 1是 0 否
 
     private  Integer status;
 
-    private Double fullMarks; //满分
+    private  Double fullMarks; //满分
 
 }

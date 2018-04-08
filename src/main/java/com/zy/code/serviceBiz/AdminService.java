@@ -5,31 +5,33 @@ import com.zy.code.utils.ProcessResult;
 
 public interface AdminService {
 
-    ProcessResult saveUser(User user);
-
-    ProcessResult deleteUser(User user);
-
     ProcessResult saveStudent(Student student);
 
-    ProcessResult deleteStudent(Student student);
+    ProcessResult deleteStudent(Long studentId);
 
     ProcessResult saveSubject(Subject subject);
 
-    ProcessResult deleteSubject(Subject subject);
+    ProcessResult deleteSubject(Long subjectId);
 
     ProcessResult saveTeacher(Teacher teacher);
 
-    ProcessResult deleteTeacher(Teacher teacher);
+    ProcessResult deleteTeacher(Long teacherId);
 
     ProcessResult saveScore(Score score);
 
-    ProcessResult deleteScore(Score score);
+    ProcessResult deleteScore(Long scoreId);
 
     ProcessResult saveTeacherAndSubject(TeacherAndSubject teacherAndSubject);
 
-    ProcessResult deleteTeacherAndSubject(TeacherAndSubject teacherAndSubject);
+    ProcessResult deleteTeacherAndSubject(Long teacherAndSubjectId);
 
     ProcessResult saveSchool(School school);
 
-    ProcessResult deleteSchool(School school);
+    ProcessResult deleteSchool(Long schoolId);
+
+    ProcessResult saveClassInSchool(ClassInSchool classInSchool);
+
+    ProcessResult deleteClassInSchool(Long classInSchoolId);
+
+    ProcessResult login(Teacher teacher);
 }
