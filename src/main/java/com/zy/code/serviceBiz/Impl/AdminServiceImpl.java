@@ -162,6 +162,7 @@ public class AdminServiceImpl extends BaseServiceImpl implements AdminService {
         Teacher teacher1 = teacherRepository.findByTeacherName(teacher.getTeacherName());
        if (teacher1!=null && teacher1.getPassword().equals(teacher1.getPassword())){
            processResult.setStatus(CodeMessageConstants.SUCCESS.getStatus());
+           return processResult;
        }
        return ProcessResultReturnUtil.failProcessResult();
     }

@@ -22,6 +22,11 @@ public class IndexControllor extends BaseControllor{
         return "welcom";
     }
 
+    @RequestMapping(value = "/tosubmitScore",method = RequestMethod.GET)
+    public String tosubmitScore(){
+        return "admin/submitScore";
+    }
+
     @RequestMapping(value = "/toregister",method = RequestMethod.GET)
     public String toregister(){
         return "registerView/register";
@@ -57,20 +62,16 @@ public class IndexControllor extends BaseControllor{
     }
 
     @RequestMapping(value = "/login",method = RequestMethod.GET)
-    public ModelAndView login(@RequestParam(value = "teacherName",required = false) String teacherName,
+    public String login(@RequestParam(value = "teacherName",required = false) String teacherName,
                         @RequestParam(value = "password",required = false) String password){
-        ModelAndView modelAndView = new ModelAndView();
         Teacher teacher = new Teacher();
         teacher.setTeacherName(teacherName);
         teacher.setPassword(password);
         ProcessResult processResult = adminService.login(teacher);
         if (processResult.getStatus().equals(CodeMessageConstants.SUCCESS.getStatus())) {
-            modelAndView.setViewName("register");
-        }else{
-            modelAndView.setViewName("welcom");
+            return  "admin/loginSuccess";
         }
-        setReturnProcessResult(processResult);
-        return modelAndView;
+        return "welcom";
     }
 
 
