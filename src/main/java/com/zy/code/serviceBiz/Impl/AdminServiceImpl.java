@@ -16,7 +16,21 @@ import java.util.Optional;
 @Component
 public class AdminServiceImpl extends BaseServiceImpl implements AdminService {
 
+    public ClassInSchool getClassInSchoolById(Long id){
+        Optional<ClassInSchool> classInSchoolOptional = classInSchoolRespository.findById(id);
+        ClassInSchool classInSchool = classInSchoolOptional.get();
+        return classInSchool;
+    }
 
+    public List<Student> getAllStudentByClassInSchoolId(Long id) {
+        List<Student> studentList = studentRepository.findByClassInSchoolId(id);
+        return studentList;
+    }
+
+    public List<Subject> getAllSubjectByClassInSchooluId(Long id){
+      List<Subject> subjectList = subjectRespository.findBySchoolId(id);
+      return subjectList;
+    }
     @Override
     public ProcessResult getClassListBySchoolId(Long schoolId) {
         ProcessResult processResult = new ProcessResult();
@@ -130,7 +144,9 @@ public class AdminServiceImpl extends BaseServiceImpl implements AdminService {
     public ProcessResult saveSchool(School school) {
         School school1 = schoolRepository.save(school);
         if (null != school1){
-           return ProcessResultReturnUtil.successProcessResult();
+           ProcessResult processResult = ProcessResultReturnUtil.successProcessResult();
+           processResult.getData().put("schoolId",school1.getId());
+           return processResult;
         }
         return ProcessResultReturnUtil.failProcessResult();
     }

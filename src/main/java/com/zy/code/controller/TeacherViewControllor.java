@@ -1,9 +1,8 @@
 package com.zy.code.controller;
 
-import com.zy.code.entity.ClassInSchool;
-import com.zy.code.entity.School;
-import com.zy.code.entity.Teacher;
+import com.zy.code.entity.*;
 import com.zy.code.utils.ProcessResult;
+import jdk.nashorn.internal.runtime.linker.LinkerCallSite;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,7 +53,7 @@ public class TeacherViewControllor extends BaseControllor {
 
     @RequestMapping(value = "/getClassListBySchoolId",method = RequestMethod.GET)
     public ModelAndView getClassListBySchoolId(@RequestParam(value = "schoolId", required = false) Long schoolId
-            , ModelMap modelMap, HttpSession session){
+            , ModelMap modelMap){
         ModelAndView modelAndView = new ModelAndView();
         ProcessResult processResult = adminService.getClassListBySchoolId(schoolId);
         List<ClassInSchool> classList = (List<ClassInSchool>)processResult.getData().get("classList");
@@ -64,6 +63,36 @@ public class TeacherViewControllor extends BaseControllor {
         modelMap.addAttribute("schoolList",schoolList);
         modelMap.addAttribute("schoolId",schoolId);
         modelAndView.setViewName("registerView/registerStudent");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/getClassListBySchoolIdTwo",method = RequestMethod.GET)
+    public ModelAndView getClassListBySchoolIdTwo(@RequestParam(value = "schoolId", required = false) Long schoolId
+            , ModelMap modelMap){
+       ModelAndView modelAndView = getClassListBySchoolId(schoolId,modelMap);
+        modelAndView.setViewName("admin/submitScore");
+        return modelAndView;
+    }
+
+
+    @RequestMapping(value = "/getStudentListByClassId",method = RequestMethod.GET)
+    public ModelAndView getStudentListByClassId(@RequestParam(value = "classInSchoolId", required = false) Long classInSchoolId
+            , ModelMap modelMap){
+        ModelAndView modelAndView = new ModelAndView();
+        ClassInSchool classInSchool1 = adminService.getClassInSchoolById(classInSchoolId);
+        ProcessResult processResult = adminService.getClassListBySchoolId(classInSchool1.getSchoolId());
+        List<ClassInSchool> classList = (List<ClassInSchool>)processResult.getData().get("classList");
+        modelMap.addAttribute("classList",classList);
+        ProcessResult processResult2 = adminService.getSchoolList();
+        List<School> schoolList = (List<School>)processResult2.getData().get("schoolList");
+        modelMap.addAttribute("schoolList",schoolList);
+        List<Student> studentList = adminService.getAllStudentByClassInSchoolId(classInSchoolId);
+        List<Subject> subjectList = adminService.getAllSubjectByClassInSchooluId(classInSchool1.getSchoolId());
+        modelMap.addAttribute("subjectList",subjectList);
+        modelMap.addAttribute("studentList",studentList);
+        modelMap.addAttribute("schoolId",classInSchool1.getSchoolId());
+        modelMap.addAttribute("classInSchoolId",classInSchool1.getId());
+        modelAndView.setViewName("admin/submitScore");
         return modelAndView;
     }
 

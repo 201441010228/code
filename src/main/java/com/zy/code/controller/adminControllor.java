@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 @Controller
 public class adminControllor extends BaseControllor {
 
@@ -27,6 +29,9 @@ public class adminControllor extends BaseControllor {
         school.setAddress(address);
         school.setPhoneNumber(phoneNumber);
         ProcessResult processResult =  adminService.saveSchool(school);
+        saveSubject(Long.parseLong(processResult.getData().get("schoolId").toString()),"语文");
+        saveSubject(Long.parseLong(processResult.getData().get("schoolId").toString()),"数学");
+        saveSubject(Long.parseLong(processResult.getData().get("schoolId").toString()),"英语");
         if(processResult.getStatus().equals(CodeMessageConstants.SUCCESS.getStatus())){
             return "registerView/register";
         }
@@ -81,6 +86,15 @@ public class adminControllor extends BaseControllor {
             return "registerView/register";
         }
         return "error";
+    }
+    
+    private void saveSubject(Long schoolId,String subjectName){
+        Subject subject = new Subject();
+        subject.setFullMarks(100D);
+        subject.setSchoolId(schoolId);
+        subject.setSubjectName(subjectName);
+        subject.setWarningScore(60D);
+        adminService.saveSubject(subject);
     }
 
 
@@ -146,10 +160,31 @@ public class adminControllor extends BaseControllor {
     }
 
     @GetMapping(value = "/saveScore")
-    public String saveScore(){
-        Score score = new Score();
-        adminService.saveScore(score);
-        return "success";
+    public String saveScore(@RequestParam(value = "schoolId", required = false) Long schoolId,
+                            @RequestParam(value = "classInSchoolId", required = false) Long classInSchoolId,
+                            @RequestParam(value = "studentId", required = false) Long studentId,
+                            @RequestParam(value = "chineseSubject", required = false) Double chineseSubject,
+                            @RequestParam(value = "mathSubject", required = false) Double mathSubject,
+                            @RequestParam(value = "englishSubject", required = false) Double englishSubject,
+                            @RequestParam(value = "year", required = false) Integer year,
+                            @RequestParam(value = "midOrEnd", required = false) Integer midOrEnd){
+       List<Subject> subjectList = adminService.getAllSubjectByClassInSchooluId(schoolId);
+        for (Subject subject : subjectList) {
+            Score score = new Score();
+            score.setStudentId(studentId);
+            score.setMidOrEnd(midOrEnd);
+            score.setYear(year);
+            score.setSubjectId(subject.getId());
+            if ("语文".equals(subject.getSubjectName())) {
+                score.setScoreNumber(chineseSubject);
+            } else if ("数学".equals(subject.getSubjectName())) {
+                score.setScoreNumber(mathSubject);
+            } else {
+                score.setScoreNumber(englishSubject);
+            }
+            adminService.saveScore(score);
+        }
+        return "admin/loginSuccess";
     }
 
     @GetMapping(value = "/saveSubject")

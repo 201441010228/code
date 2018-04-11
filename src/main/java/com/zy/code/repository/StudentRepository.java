@@ -18,4 +18,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query("select s from Student s where s.classInSchoolId =:classInSchoolId and s.year =:year")
     List<Student> findStudentByClassInSchoolIdAndYear(@Param("classInSchoolId") Long classInSchoolId,@Param("year")  Integer year);
 
+    List<Student> findByClassInSchoolId(Long id);
 }

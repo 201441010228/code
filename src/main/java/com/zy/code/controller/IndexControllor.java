@@ -23,7 +23,10 @@ public class IndexControllor extends BaseControllor{
     }
 
     @RequestMapping(value = "/tosubmitScore",method = RequestMethod.GET)
-    public String tosubmitScore(){
+    public String tosubmitScore(ModelMap modelMap){
+        ProcessResult processResult = adminService.getSchoolList();
+        List<School> schoolList = (List<School>)processResult.getData().get("schoolList");
+        modelMap.addAttribute("schoolList",schoolList);
         return "admin/submitScore";
     }
 
