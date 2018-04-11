@@ -1,5 +1,6 @@
 package com.zy.code.controller;
 
+import com.zy.code.entity.ClassInSchool;
 import com.zy.code.entity.School;
 import com.zy.code.entity.Teacher;
 import com.zy.code.utils.ProcessResult;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 
@@ -49,6 +51,22 @@ public class TeacherViewControllor extends BaseControllor {
         modelAndView.setViewName("registerView/registerClass");
         return modelAndView;
     }
+
+    @RequestMapping(value = "/getClassListBySchoolId",method = RequestMethod.GET)
+    public ModelAndView getClassListBySchoolId(@RequestParam(value = "schoolId", required = false) Long schoolId
+            , ModelMap modelMap, HttpSession session){
+        ModelAndView modelAndView = new ModelAndView();
+        ProcessResult processResult = adminService.getClassListBySchoolId(schoolId);
+        List<ClassInSchool> classList = (List<ClassInSchool>)processResult.getData().get("classList");
+        modelMap.addAttribute("classList",classList);
+        ProcessResult processResult2 = adminService.getSchoolList();
+        List<School> schoolList = (List<School>)processResult2.getData().get("schoolList");
+        modelMap.addAttribute("schoolList",schoolList);
+        modelMap.addAttribute("schoolId",schoolId);
+        modelAndView.setViewName("registerView/registerStudent");
+        return modelAndView;
+    }
+
 
 
 }

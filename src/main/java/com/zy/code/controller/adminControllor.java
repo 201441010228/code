@@ -61,12 +61,60 @@ public class adminControllor extends BaseControllor {
         return "error";
     }
 
-    @RequestMapping(value = {"/saveUser","/updateUser"},method = RequestMethod.GET)
-    public ModelAndView saveUser(@RequestParam(value = "name",required = false) String name){
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("index");
-        return  modelAndView;
+
+    @RequestMapping(value = "/registClass",method = RequestMethod.GET)
+    public String registClass(@RequestParam(value = "className",required = false) String className,
+                              @RequestParam(value = "schoolId", required = false) Long schoolId,
+                              @RequestParam(value = "chineseTeacherId", required = false) Long chineseTeacherId,
+                              @RequestParam(value = "mathTeacherId", required = false) Long mathTeacherId,
+                              @RequestParam(value = "englishTeacherId", required = false) Long englishTeacherId,
+                              @RequestParam(value = "teacherId", required = false) Long teacherId){
+        ClassInSchool classInSchool = new ClassInSchool();
+        classInSchool.setTeacherId(teacherId);
+        classInSchool.setChineseTeacherId(chineseTeacherId);
+        classInSchool.setMathTeacherId(mathTeacherId);
+        classInSchool.setEnglishTeacherId(englishTeacherId);
+        classInSchool.setSchoolId(schoolId);
+        classInSchool.setClassInSchoolName(className);
+        ProcessResult processResult =  adminService.saveClassInSchool(classInSchool);
+        if(processResult.getStatus().equals(CodeMessageConstants.SUCCESS.getStatus())){
+            return "registerView/register";
+        }
+        return "error";
     }
+
+
+    @RequestMapping(value = "/registStudent",method = RequestMethod.GET)
+    public String registStudent(@RequestParam(value = "studentName",required = false) String studentName,
+                                @RequestParam(value = "province", required = false) String province,
+                                @RequestParam(value = "city", required = false) String city,
+                                @RequestParam(value = "area", required = false) String area,
+                                @RequestParam(value = "address", required = false) String address,
+                                @RequestParam(value = "password", required = false) String password,
+                                @RequestParam(value = "phoneNumber", required = false) String phoneNumber,
+                                @RequestParam(value = "sex", required = false) Integer sex,
+                                @RequestParam(value = "schoolId", required = false) Long schoolId,
+                                @RequestParam(value = "classInSchoolId", required = false) Long classInSchoolId){
+        Student student = new Student();
+        student.setStudentName(studentName);
+        student.setProvince(province);
+        student.setCity(city);
+        student.setArea(area);
+        student.setAddress(address);
+        student.setPhoneNumber(phoneNumber);
+        student.setPassword(password);
+        student.setSex(sex);
+        student.setSchoolId(schoolId);
+        student.setClassInSchoolId(classInSchoolId);
+        ProcessResult processResult =  adminService.saveStudent(student);
+        if(processResult.getStatus().equals(CodeMessageConstants.SUCCESS.getStatus())){
+            return "registerView/register";
+        }
+        return "error";
+    }
+
+
+
 
 
     @GetMapping(value = "/saveStudent")

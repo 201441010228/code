@@ -1,10 +1,169 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Register Student</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script th:src="@{/js/jquery-1.8.3.js}"></script>
+    <script th:src="@{/js/address.js}"></script>
+    <script type="text/javascript">
+        $(function () {
+            var html = "";
+            $("#city").append(html); $("#area").append(html);
+            $.each(pdata,function(idx,item){
+                if (parseInt(item.level) == 0) {
+                    html += "<option value='" + item.names + "' exid='" + item.code + "'>" + item.names + "</option>";
+                }
+            });
+            $("#province").append(html);
+            $("#province").change(function(){
+                if ($(this).val() == "") return;
+                $("#city option").remove(); $("#area option").remove();
+                var code = $(this).find("option:selected").attr("exid"); code = code.substring(0,2);
+                var html = "<option value=''>--请选择--</option>"; $("#area").append(html);
+                $.each(pdata,function(idx,item){
+                    if (parseInt(item.level) == 1 && code == item.code.substring(0,2)) {
+                        html += "<option value='" + item.names + "' exid='" + item.code + "'>" + item.names + "</option>";
+                    }
+                });
+                $("#city").append(html);
+            });
+            $("#city").change(function(){
+                if ($(this).val() == "") return;
+                $("#area option").remove();
+                var code = $(this).find("option:selected").attr("exid"); code = code.substring(0,4);
+                var html = "<option value=''>--请选择--</option>";
+                $.each(pdata,function(idx,item){
+                    if (parseInt(item.level) == 2 && code == item.code.substring(0,4)) {
+                        html += "<option value='" + item.names + "' exid='" + item.code + "'>" + item.names + "</option>";
+                    }
+                });
+                $("#area").append(html);
+            });
+        });
+    </script>
 </head>
 <body>
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <div class="page-header">
+                <h1>
+                    Please Regist Student
+                    <br>
+                </h1>
+            </div>
+            <dl>
+                <dt>
+                    For Your Attention,The following information is required
+                </dt>
+                <dd>
+                    studentName
+                </dd>
+                <dd>
+                    province
+                </dd>
+                <dd>
+                    city
+                </dd>
+                <dd>
+                    area
+                </dd>
+                <dd>
+                    address
+                </dd>
+                <dd>
+                    phoneNumber
+                </dd>
+                <dd>
+                    shool Name
+                </dd>
+                <dd>
+                    password
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <form class="form-horizontal" role="form" action="/registStudent">
+        <div class="form-group">
+            <label for="schooId" class="col-sm-2 control-label">选择学校</label>
+            <div class="col-sm-10">
+                <select id="schooId" name="schoolId" onchange="window.location.href='getClassListBySchoolId?schoolId='+this.value">
+                    <option value="">--请选择学校--</p></option>
+                    <option th:selected = "${schoolId eq school.id}" th:each="school:${schoolList}" th:value="${school.id}"><p th:text="${school.schoolName}"></p></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="classInSchoolId" class="col-sm-2 control-label">选择班级</label>
+            <div class="col-sm-10">
+                <select id="classInSchoolId" name="classInSchoolId">
+                    <option value="">--请选择班级--</p></option>
+                    <option th:each="schoolClass:${classList}" th:value="${schoolClass.id}"><p th:text="${schoolClass.classInSchoolName}"></p></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="studentName" class="col-sm-2 control-label">学生名字</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="studentName" name="studentName"
+                       placeholder="请输入学生名字">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="sex" class="col-sm-2 control-label">性别</label>
+            <div class="col-sm-10">
+                <input type="radio"  id = "sex" name="sex" value="1" checked>男</input>
+                <input type="radio"  name="sex" value="0">女</input>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">
+                <i>*</i>所在地址</label>
+            <div class="col-sm-3">
+                <select name="province" id="province" class="form-control">
+                    <option value="">--请选择--</option></select>
+            </div>
+            <div class="col-sm-3">
+                <select name="city" id="city" class="form-control">
+                    <option value="">--请选择--</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <select name="area" id="area" class="form-control">
+                    <option value="">--请选择--</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="address" class="col-sm-2 control-label"></label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="address" name="address"
+                          placeholder="请输入学生地址">
+                </textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="phoneNumber" class="col-sm-2 control-label">学生电话</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
+                       placeholder="请输入学生电话">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password" class="col-sm-2 control-label">密码</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" id="password" name="password"
+                       placeholder="请输入密码">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary btn-lg">注册</button>
+            </div>
+        </div>
+    </form>
+</div>
 
 </body>
 </html>

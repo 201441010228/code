@@ -20,7 +20,7 @@ spring:
     suffix: .html
     mode: HTML5
     encoding: utf-8
-    cache: false
+    cache: true
     content-type: text/html
 
 

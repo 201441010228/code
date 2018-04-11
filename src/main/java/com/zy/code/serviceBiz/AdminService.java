@@ -5,6 +5,7 @@ import com.zy.code.utils.ProcessResult;
 
 public interface AdminService {
 
+    ProcessResult getClassListBySchoolId(Long schoolId);
 
     ProcessResult getSchoolList();
 

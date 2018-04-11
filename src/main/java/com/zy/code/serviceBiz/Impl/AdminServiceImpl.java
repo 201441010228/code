@@ -18,6 +18,15 @@ public class AdminServiceImpl extends BaseServiceImpl implements AdminService {
 
 
     @Override
+    public ProcessResult getClassListBySchoolId(Long schoolId) {
+        ProcessResult processResult = new ProcessResult();
+        processResult.setStatus(CodeMessageConstants.SUCCESS.getStatus());
+        List<ClassInSchool> classInSchoolList = classInSchoolRespository.findBySchoolId(schoolId);
+        processResult.getData().put("classList",classInSchoolList);
+        return processResult;
+    }
+
+    @Override
     public ProcessResult getSchoolList() {
         List<School> schoolList = schoolRepository.findAll();
         ProcessResult processResult = new ProcessResult();

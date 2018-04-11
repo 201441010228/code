@@ -48,6 +48,14 @@ public class IndexControllor extends BaseControllor{
         return "registerView/registerClass";
     }
 
+    @RequestMapping(value = "/toregisterStudent",method = RequestMethod.GET)
+    public String toregisterStudent(ModelMap modelMap){
+        ProcessResult processResult = adminService.getSchoolList();
+        List<School> schoolList = (List<School>)processResult.getData().get("schoolList");
+        modelMap.addAttribute("schoolList",schoolList);
+        return "registerView/registerStudent";
+    }
+
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public ModelAndView login(@RequestParam(value = "teacherName",required = false) String teacherName,
                         @RequestParam(value = "password",required = false) String password){
