@@ -8,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class adminControllor extends BaseControllor {
 
     @RequestMapping(value = {"/saveUser","/updateUser"},method = RequestMethod.GET)
-    public ModelAndView saveUser(@RequestParam("name") String name){
+    public ModelAndView saveUser(@RequestParam(value = "name",required = false) String name){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index");
         return  modelAndView;

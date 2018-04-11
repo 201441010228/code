@@ -16,11 +16,11 @@ spring:
       exclude: static
   spring:
    thymeleaf:
-    prefix: classpath:/templates/*.html
+    prefix: classpath:/templates/
     suffix: .html
     mode: HTML5
     encoding: utf-8
-    cache: true
+    cache: false
     content-type: text/html
 
 

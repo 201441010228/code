@@ -1,10 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:src="http://www.w3.org/1999/html" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>WELCOME</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script th:src="@{/js/jquery-1.8.3.js}"></script>
+    <script type="text/javascript">
+           function registerClick() {
+               $.ajax({
+                   type: "GET",
+                   url: "/toregister",
+               });
+           }
+           $(document).ready(function(){
+
+           });
+    </script>
 </head>
 <body>
-
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <div class="page-header">
+                <h1>
+                    Performance Analysis System  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <small>Author : Zhang Yang</small>
+                </h1>
+            </div>
+            <div class="jumbotron">
+                <h1>
+                    Hello, Everyone!
+                </h1>
+                <p>
+                    This system is committed to helping teachers to analyze student achievement through charts, so as to improve teaching efficiency.
+                </p>
+                <p>
+                    <a class="btn btn-primary btn-large" href="#">Know more</a>
+                </p>
+            </div>
+            <form role="form" action="/login">
+                <div class="form-group">
+                    <label for="teacherName">User Name:</label><input type="text" class="form-control" id="teacherName" name="teacherName"/>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label><input type="password" class="form-control" id="password" name="password" />
+                </div>
+                <div class="col-md-12 column">
+                    <input type="submit" class="btn btn-success"></input>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" class="btn btn-info" onclick="registerClick()">注 册</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

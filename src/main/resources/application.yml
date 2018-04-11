@@ -3,15 +3,27 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/design
+    url: jdbc:mysql://127.0.0.1:3306/design?characterEncoding=utf-8&useSSL=false
     username: scott
     password: admin
   jpa:
     hibernate:
       ddl-auto: create
     show-sql: true
-  profiles:
-    active: dev
+  devtools:
+    restart:
+      enabled: true
+      exclude: static
+  spring:
+   thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: utf-8
+    cache: false
+    content-type: text/html
+
+
 
 
 

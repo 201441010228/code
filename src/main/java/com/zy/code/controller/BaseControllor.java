@@ -16,7 +16,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
-@RestController
+@Controller
 public class BaseControllor {
 
     protected  org.slf4j.Logger logger =  LoggerFactory.getLogger(BaseControllor.class);
