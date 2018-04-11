@@ -6,12 +6,34 @@ import com.zy.code.utils.CodeMessageConstants;
 import com.zy.code.utils.ProcessResult;
 import com.zy.code.utils.ProcessResultReturnUtil;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Component
 public class AdminServiceImpl extends BaseServiceImpl implements AdminService {
 
+
+    @Override
+    public ProcessResult getSchoolList() {
+        List<School> schoolList = schoolRepository.findAll();
+        ProcessResult processResult = new ProcessResult();
+        processResult.setStatus(CodeMessageConstants.SUCCESS.getStatus());
+        processResult.getData().put("schoolList",schoolList);
+        return processResult;
+    }
+
+    @Override
+    public ProcessResult getTeacherListBySchoolId(Long schoolId) {
+        ProcessResult processResult = new ProcessResult();
+        processResult.setStatus(CodeMessageConstants.SUCCESS.getStatus());
+        List<Teacher> teacherList = teacherRepository.findBySchoolId(schoolId);
+        processResult.getData().put("teacherList",teacherList);
+        return processResult;
+    }
 
     @Override
     public ProcessResult saveStudent(Student student) {
@@ -47,7 +69,14 @@ public class AdminServiceImpl extends BaseServiceImpl implements AdminService {
 
     @Override
     public ProcessResult saveTeacher(Teacher teacher) {
-        return null;
+        Long schoolId = teacher.getSchoolId();
+        Optional<School> schoolOptional = schoolRepository.findById(schoolId);
+        if (schoolOptional.isPresent()){
+           teacherRepository.save(teacher);
+        }else{
+            return ProcessResultReturnUtil.failProcessResult();
+        }
+        return ProcessResultReturnUtil.successProcessResult();
     }
 
     @Override
@@ -61,7 +90,7 @@ public class AdminServiceImpl extends BaseServiceImpl implements AdminService {
     public ProcessResult saveScore(Score score) {
       Score score1 =  scoreRespository.save(score);
       if (null != score1){
-          ProcessResultReturnUtil.successProcessResult();
+        return   ProcessResultReturnUtil.successProcessResult();
       }
        return ProcessResultReturnUtil.failProcessResult();
     }
@@ -77,7 +106,7 @@ public class AdminServiceImpl extends BaseServiceImpl implements AdminService {
     public ProcessResult saveTeacherAndSubject(TeacherAndSubject teacherAndSubject) {
        TeacherAndSubject teacherAndSubject1 = teacherAndSubjectRepository.save(teacherAndSubject);
        if (null != teacherAndSubject1){
-           ProcessResultReturnUtil.successProcessResult();
+         return   ProcessResultReturnUtil.successProcessResult();
        }
        return ProcessResultReturnUtil.failProcessResult();
     }
@@ -92,7 +121,7 @@ public class AdminServiceImpl extends BaseServiceImpl implements AdminService {
     public ProcessResult saveSchool(School school) {
         School school1 = schoolRepository.save(school);
         if (null != school1){
-            ProcessResultReturnUtil.successProcessResult();
+           return ProcessResultReturnUtil.successProcessResult();
         }
         return ProcessResultReturnUtil.failProcessResult();
     }
@@ -107,7 +136,7 @@ public class AdminServiceImpl extends BaseServiceImpl implements AdminService {
     public ProcessResult saveClassInSchool(ClassInSchool classInSchool) {
       ClassInSchool classInSchool1 =  classInSchoolRespository.save(classInSchool);
         if (null != classInSchool1){
-            ProcessResultReturnUtil.successProcessResult();
+          return   ProcessResultReturnUtil.successProcessResult();
         }
         return ProcessResultReturnUtil.failProcessResult();
     }

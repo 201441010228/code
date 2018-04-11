@@ -5,10 +5,13 @@ import com.zy.code.entity.Teacher;
 import com.zy.code.utils.CodeMessageConstants;
 import com.zy.code.utils.ProcessResult;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 public class IndexControllor extends BaseControllor{
@@ -29,6 +32,14 @@ public class IndexControllor extends BaseControllor{
         return "registerView/registerSchool";
     }
 
+    @RequestMapping(value = "/toregisterTeacher",method = RequestMethod.GET)
+    public String toregisterTeacher(ModelMap modelMap){
+        ProcessResult processResult = adminService.getSchoolList();
+        List<School> schoolList = (List<School>)processResult.getData().get("schoolList");
+        modelMap.addAttribute("schoolList",schoolList);
+        return "registerView/registerTeacher";
+    }
+
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public ModelAndView login(@RequestParam(value = "teacherName",required = false) String teacherName,
                         @RequestParam(value = "password",required = false) String password){
@@ -46,27 +57,7 @@ public class IndexControllor extends BaseControllor{
         return modelAndView;
     }
 
-    @RequestMapping(value = "/registSchool",method = RequestMethod.GET)
-    public String regist(@RequestParam(value = "schoolName",required = false) String schoolName,
-                               @RequestParam(value = "province",required = false) String province,
-                               @RequestParam(value = "city",required = false) String city,
-                               @RequestParam(value = "area",required = false) String area,
-                               @RequestParam(value = "address",required = false) String address,
-                               @RequestParam(value = "phoneNumber",required = false) String phoneNumber
-                             ){
-        School school = new School();
-        school.setSchoolName(schoolName);
-        school.setProvince(province);
-        school.setCity(city);
-        school.setArea(area);
-        school.setAddress(address);
-        school.setPhoneNumber(phoneNumber);
-        ProcessResult processResult =  adminService.saveSchool(school);
-        if(processResult.getStatus().equals(CodeMessageConstants.SUCCESS.getStatus())){
-            return "register";
-        }
-        return "error";
-    }
+
     @RequestMapping(value = "/regist",method = RequestMethod.GET)
     public ModelAndView regist(@RequestParam(value = "teachername",required = false) String username,
                          @RequestParam(value = "password",required = false) String password,

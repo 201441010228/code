@@ -5,6 +5,11 @@ import com.zy.code.utils.ProcessResult;
 
 public interface AdminService {
 
+
+    ProcessResult getSchoolList();
+
+    ProcessResult getTeacherListBySchoolId(Long schoolId);
+
     ProcessResult saveStudent(Student student);
 
     ProcessResult deleteStudent(Long studentId);
