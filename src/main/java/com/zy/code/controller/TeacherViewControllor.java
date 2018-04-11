@@ -74,6 +74,23 @@ public class TeacherViewControllor extends BaseControllor {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/getClassListBySchoolIdView",method = RequestMethod.GET)
+    public ModelAndView getClassListBySchoolIdView(@RequestParam(value = "schoolId", required = false) Long schoolId
+            , ModelMap modelMap){
+        ModelAndView modelAndView = getClassListBySchoolId(schoolId,modelMap);
+        modelAndView.setViewName("teacherView/chooseAvgView");
+        return modelAndView;
+    }
+
+
+
+    @RequestMapping(value = "/getStudentListByClassIdView",method = RequestMethod.GET)
+    public ModelAndView getStudentListByClassIdView(@RequestParam(value = "classInSchoolId", required = false) Long classInSchoolId
+            , ModelMap modelMap){
+        ModelAndView modelAndView = getStudentListByClassId(classInSchoolId,modelMap);
+        modelAndView.setViewName("teacherView/chooseAvgView");
+        return modelAndView;
+    }
 
     @RequestMapping(value = "/getStudentListByClassId",method = RequestMethod.GET)
     public ModelAndView getStudentListByClassId(@RequestParam(value = "classInSchoolId", required = false) Long classInSchoolId
@@ -94,6 +111,18 @@ public class TeacherViewControllor extends BaseControllor {
         modelMap.addAttribute("classInSchoolId",classInSchool1.getId());
         modelAndView.setViewName("admin/submitScore");
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/avgViewByStudentId",method = RequestMethod.GET)
+    public ModelAndView avgViewByStudentId(@RequestParam(value = "classInSchoolId", required = false) Long classInSchoolId,
+                                           @RequestParam(value = "schoolId", required = false) Long schoolId,
+                                           @RequestParam(value = "studentId", required = false) Long studentId,
+                                           @RequestParam(value = "year", required = false) Integer year,
+                                           @RequestParam(value = "midOrEnd", required = false) Integer midOrEnd
+            , ModelMap modelMap){
+        ProcessResult processResult = teacherService.getStudentScoreCompareClassAvg(studentId,year,midOrEnd);
+        System.out.println();
+        return null;
     }
 
 

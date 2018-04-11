@@ -108,7 +108,8 @@ public class adminControllor extends BaseControllor {
                                 @RequestParam(value = "phoneNumber", required = false) String phoneNumber,
                                 @RequestParam(value = "sex", required = false) Integer sex,
                                 @RequestParam(value = "schoolId", required = false) Long schoolId,
-                                @RequestParam(value = "classInSchoolId", required = false) Long classInSchoolId){
+                                @RequestParam(value = "classInSchoolId", required = false) Long classInSchoolId,
+                                @RequestParam(value = "year", required = false) Integer year){
         Student student = new Student();
         student.setStudentName(studentName);
         student.setProvince(province);
@@ -120,6 +121,7 @@ public class adminControllor extends BaseControllor {
         student.setSex(sex);
         student.setSchoolId(schoolId);
         student.setClassInSchoolId(classInSchoolId);
+        student.setYear(year);
         ProcessResult processResult =  adminService.saveStudent(student);
         if(processResult.getStatus().equals(CodeMessageConstants.SUCCESS.getStatus())){
             return "registerView/register";

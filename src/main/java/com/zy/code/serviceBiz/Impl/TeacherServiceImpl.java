@@ -53,7 +53,7 @@ public class TeacherServiceImpl extends BaseServiceImpl implements TeacherServic
                         if (sub.getId().equals(sco.getSubjectId())) {
                             String subName = sub.getSubjectName() + "Sum";
                             if (null == processResult.getData().get(subName)) {
-                                processResult.getData().put(subName, 0);
+                                processResult.getData().put(subName, sco.getScoreNumber());
                             } else {
                                 Double sum = Double.parseDouble(processResult.getData().get(subName).toString());
                                 sum = sum + sco.getScoreNumber();

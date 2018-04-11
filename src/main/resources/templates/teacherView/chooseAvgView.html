@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Choose Student To Compare Classes Avg</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script th:src="@{/js/jquery-1.8.3.js}"></script>
+    <script th:src="@{/js/address.js}"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <div class="page-header">
+                <h1>
+                    Please Choose Student
+                    <br>
+                </h1>
+            </div>
+            <dl>
+                <dt>
+                    For Your Attention,The following information is required
+                </dt>
+                <dd>
+                    studentName
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <form class="form-horizontal" role="form" action="/avgViewByStudentId">
+        <div class="form-group">
+            <label for="schooId" class="col-sm-2 control-label">选择学校</label>
+            <div class="col-sm-10">
+                <select id="schooId" name="schoolId" onchange="window.location.href='getClassListBySchoolIdView?schoolId='+this.value">
+                    <option value="">--请选择学校--</p></option>
+                    <option th:selected = "${schoolId eq school.id}" th:each="school:${schoolList}" th:value="${school.id}"><p th:text="${school.schoolName}"></p></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="classInSchoolId" class="col-sm-2 control-label">选择班级</label>
+            <div class="col-sm-10">
+                <select id="classInSchoolId" name="classInSchoolId" onchange="window.location.href='getStudentListByClassIdView?classInSchoolId='+this.value">
+                    <option value="">--请选择班级--</p></option>
+                    <option th:selected = "${classInSchoolId eq schoolClass.id}" th:each="schoolClass:${classList}" th:value="${schoolClass.id}"><p th:text="${schoolClass.classInSchoolName}"></p></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="studentId" class="col-sm-2 control-label">选择学生</label>
+            <div class="col-sm-10">
+                <select id="studentId" name="studentId">
+                    <option value="">--请选择学生--</p></option>
+                    <option th:each="student:${studentList}" th:value="${student.id}"><p th:text="${student.studentName}"></p></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="year" class="col-sm-2 control-label">年份</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="year" name="year"
+                       placeholder="请输入年份（如2014）">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="midOrEnd" class="col-sm-2 control-label">考试类别</label>
+            <div class="col-sm-10">
+                <input type="radio"  id = "midOrEnd" name="midOrEnd" value="0" checked>期中</input>
+                <input type="radio"  name="midOrEnd" value="1">期末</input>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary btn-lg">查看视图</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

@@ -30,6 +30,14 @@ public class IndexControllor extends BaseControllor{
         return "admin/submitScore";
     }
 
+    @RequestMapping(value = "/tochooseAvgView",method = RequestMethod.GET)
+    public String tochooseAvgView(ModelMap modelMap){
+        ProcessResult processResult = adminService.getSchoolList();
+        List<School> schoolList = (List<School>)processResult.getData().get("schoolList");
+        modelMap.addAttribute("schoolList",schoolList);
+        return "teacherView/chooseAvgView";
+    }
+
     @RequestMapping(value = "/toregister",method = RequestMethod.GET)
     public String toregister(){
         return "registerView/register";
