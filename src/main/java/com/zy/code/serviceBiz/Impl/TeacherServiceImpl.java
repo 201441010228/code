@@ -61,7 +61,7 @@ public class TeacherServiceImpl extends BaseServiceImpl implements TeacherServic
                             }
                             //找出所查学生的成绩
                             if (sco.getStudentId().equals(studentId)) {
-                                processResult.getData().put("studentScore", sco.getScoreNumber());
+                                processResult.getData().put("student"+subName, sco.getScoreNumber());
                             }
                         }
                     }
@@ -72,7 +72,7 @@ public class TeacherServiceImpl extends BaseServiceImpl implements TeacherServic
         for (Subject sub : subjectList) {
             String subName = sub.getSubjectName() + "Sum";
             Double sum = Double.parseDouble(processResult.getData().get(subName).toString());
-            processResult.getData().put("Avg", sum / studentList.size());
+            processResult.getData().put(subName+"Avg", sum / studentList.size());
         }
         return processResult;
     }
