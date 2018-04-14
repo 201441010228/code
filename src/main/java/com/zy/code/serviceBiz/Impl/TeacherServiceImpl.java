@@ -45,13 +45,14 @@ public class TeacherServiceImpl extends BaseServiceImpl implements TeacherServic
         List<Student> studentList = studentRepository.findStudentByClassInSchoolIdAndYear(classInSchoolId, year);
         //计算各学科总成绩
         if (null != studentList && studentList.size() > 0) {
+            Map<String,Object> studentMap = new HashMap<>();
             for (Student stu : studentList) {
                 Long stuId = stu.getId();
                 List<Score> scoreList = scoreRespository.findScoreByStudentIdAndYear(stuId, year, midOrEnd);
                 for (Subject sub : subjectList) {
                     for (Score sco : scoreList) {
                         if (sub.getId().equals(sco.getSubjectId())) {
-                            String subName = sub.getSubjectName() + "Sum";
+                            String subName = sub.getSubjectNameEnglish();
                             if (null == processResult.getData().get(subName)) {
                                 processResult.getData().put(subName, sco.getScoreNumber());
                             } else {
@@ -61,19 +62,26 @@ public class TeacherServiceImpl extends BaseServiceImpl implements TeacherServic
                             }
                             //找出所查学生的成绩
                             if (sco.getStudentId().equals(studentId)) {
-                                processResult.getData().put("student"+subName, sco.getScoreNumber());
+                                studentMap.put(sub.getSubjectNameEnglish(), sco.getScoreNumber());
                             }
                         }
                     }
                 }
             }
+            processResult.getData().put("student",studentMap);
         }
         //放入各学科平均成绩
+        Map<String,Object> avg = new HashMap<>();
+        List<String> subjectNames = new ArrayList<>();
         for (Subject sub : subjectList) {
-            String subName = sub.getSubjectName() + "Sum";
+            String subName = sub.getSubjectNameEnglish();
             Double sum = Double.parseDouble(processResult.getData().get(subName).toString());
-            processResult.getData().put(subName+"Avg", sum / studentList.size());
+            processResult.getData().remove(subName);
+            avg.put(subName+"Avg", sum / studentList.size());
+            subjectNames.add(sub.getSubjectNameEnglish());
         }
+        processResult.getData().put("Avg", avg);
+        processResult.getData().put("subjectName",subjectNames);
         return processResult;
     }
 

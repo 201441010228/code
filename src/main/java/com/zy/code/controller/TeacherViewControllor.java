@@ -7,17 +7,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import javax.xml.ws.Response;
 import java.util.List;
 
 
-@RestController
+@Controller
 public class TeacherViewControllor extends BaseControllor {
 
     /**
@@ -114,15 +112,13 @@ public class TeacherViewControllor extends BaseControllor {
     }
 
     @RequestMapping(value = "/avgViewByStudentId",method = RequestMethod.GET)
-    public ModelAndView avgViewByStudentId(@RequestParam(value = "classInSchoolId", required = false) Long classInSchoolId,
-                                           @RequestParam(value = "schoolId", required = false) Long schoolId,
-                                           @RequestParam(value = "studentId", required = false) Long studentId,
-                                           @RequestParam(value = "year", required = false) Integer year,
-                                           @RequestParam(value = "midOrEnd", required = false) Integer midOrEnd
-            , ModelMap modelMap){
+    public @ResponseBody ProcessResult avgViewByStudentId(@RequestParam(value = "classInSchoolId", required = false) Long classInSchoolId,
+                                            @RequestParam(value = "schoolId", required = false) Long schoolId,
+                                            @RequestParam(value = "studentId", required = false) Long studentId,
+                                            @RequestParam(value = "year", required = false) Integer year,
+                                            @RequestParam(value = "midOrEnd", required = false) Integer midOrEnd){
         ProcessResult processResult = teacherService.getStudentScoreCompareClassAvg(studentId,year,midOrEnd);
-        System.out.println();
-        return null;
+        return processResult;
     }
 
 

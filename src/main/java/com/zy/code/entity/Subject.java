@@ -16,6 +16,8 @@ public class Subject {
 
     private  String subjectName;   //科目名字
 
+    private  String subjectNameEnglish;
+
     private  Long schoolId; //学校ID
 
     private  Double warningScore; //警告分数

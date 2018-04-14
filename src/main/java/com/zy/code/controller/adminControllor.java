@@ -29,9 +29,9 @@ public class adminControllor extends BaseControllor {
         school.setAddress(address);
         school.setPhoneNumber(phoneNumber);
         ProcessResult processResult =  adminService.saveSchool(school);
-        saveSubject(Long.parseLong(processResult.getData().get("schoolId").toString()),"语文");
-        saveSubject(Long.parseLong(processResult.getData().get("schoolId").toString()),"数学");
-        saveSubject(Long.parseLong(processResult.getData().get("schoolId").toString()),"英语");
+        saveSubject(Long.parseLong(processResult.getData().get("schoolId").toString()),"语文","Chinese");
+        saveSubject(Long.parseLong(processResult.getData().get("schoolId").toString()),"数学","Math");
+        saveSubject(Long.parseLong(processResult.getData().get("schoolId").toString()),"英语","English");
         if(processResult.getStatus().equals(CodeMessageConstants.SUCCESS.getStatus())){
             return "registerView/register";
         }
@@ -88,11 +88,12 @@ public class adminControllor extends BaseControllor {
         return "error";
     }
     
-    private void saveSubject(Long schoolId,String subjectName){
+    private void saveSubject(Long schoolId,String subjectName,String subjectNameEnglish){
         Subject subject = new Subject();
         subject.setFullMarks(100D);
         subject.setSchoolId(schoolId);
         subject.setSubjectName(subjectName);
+        subject.setSubjectNameEnglish(subjectNameEnglish);
         subject.setWarningScore(60D);
         adminService.saveSubject(subject);
     }
