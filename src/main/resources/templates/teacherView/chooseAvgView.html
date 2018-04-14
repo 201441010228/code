@@ -14,6 +14,9 @@
            var  year = $('#year').val();
            var  studentId = $('#studentId').val();
            var  midOrEnd = $('#midOrEnd').val();
+           $("#form").hide();
+           $("#echartsViewBut").hide();
+           $("#header").hide();
            $.ajax({
                url:"/avgViewByStudentId",
                data:{
@@ -25,10 +28,65 @@
                },
                dataType:"json",
                success:function (result) {
-                   alert("success");
-                   alert(result.subjects);
-                   console.log(result);
-                   alert(result.toString());
+                   if (result.status != 0){
+                       alert(result.message);
+                       return;
+                   }
+                   //指定图标的配置和数据
+                   option = {
+                       tooltip : {
+                           trigger: 'axis'
+                       },
+                       toolbox: {
+                           show : true,
+                           feature : {
+                               mark : {show: true},
+                               dataView : {show: true, readOnly: false},
+                               magicType: {show: true, type: ['bar', 'line']},
+                               restore : {show: true},
+                               saveAsImage : {show: true}
+                           }
+                       },
+                       calculable : true,
+                       legend: {
+                           data:result.data.compareData
+                       },
+                       xAxis : [
+                           {
+                               type : 'category',
+                               name : '科目',
+                               data : result.data.subjectNames
+                           }
+                       ],
+                       yAxis : [
+                           {
+                               max  : 100,
+                               type : 'value',
+                               name : '分数',
+                               axisLabel : {
+                                   formatter: '{value} 分'
+                               }
+                           }
+                       ],
+                       series : [
+
+                           {
+                               name:'学生成绩',
+                               type:'bar',
+                               data:result.data.student
+                           },
+                           {
+                               name:'班级平均成绩',
+                               type:'line',
+                               data:result.data.Avg
+                           }
+                       ]
+                   };
+                   //初始化echarts实例
+                   var myChart = echarts.init(document.getElementById('chartmain'));
+
+                   //使用制定的配置项和数据显示图表
+                   myChart.setOption(option);
                },
                error:function (data) {
                    alert("fail")
@@ -39,7 +97,7 @@
 </head>
 <body>
 <div class="container">
-    <div class="row clearfix">
+    <div class="row clearfix" id="header">
         <div class="col-md-12 column">
             <div class="page-header">
                 <h1>
@@ -57,7 +115,7 @@
             </dl>
         </div>
     </div>
-    <form class="form-horizontal" role="form">
+    <form class="form-horizontal" role="form" id="form">
         <div class="form-group">
             <label for="schooId" class="col-sm-2 control-label">选择学校</label>
             <div class="col-sm-10">
@@ -100,12 +158,14 @@
             </div>
         </div>
     </form>
-    <div class="form-group">
+    <div class="form-group" id="echartsViewBut">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-primary btn-lg" onclick="clickAvgView()">查看视图</button>
+            <button type="button" class="btn btn-info btn-lg"  onclick="clickAvgView()">查看视图</button>
+            &nbsp;     &nbsp;     &nbsp;     &nbsp;     &nbsp;     &nbsp;
+            <button type="button" class="btn btn-info btn-lg"  onclick="window.location.href='/tologinSuccess'">返回</button>
         </div>
     </div>
-    <div id="chartmain" style="width:600px; height: 400px;"></div>
+    <div id="chartmain" style="width: 1000px; height: 1000px;"></div>
 </div>
 
 </body>

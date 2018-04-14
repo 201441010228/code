@@ -38,6 +38,11 @@ public class IndexControllor extends BaseControllor{
         return "teacherView/chooseAvgView";
     }
 
+    @RequestMapping(value = "/tologinSuccess",method = RequestMethod.GET)
+    public String tologinSuccess(){
+        return "admin/loginSuccess";
+    }
+
     @RequestMapping(value = "/toregister",method = RequestMethod.GET)
     public String toregister(){
         return "registerView/register";

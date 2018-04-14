@@ -45,7 +45,7 @@ public class TeacherServiceImpl extends BaseServiceImpl implements TeacherServic
         List<Student> studentList = studentRepository.findStudentByClassInSchoolIdAndYear(classInSchoolId, year);
         //计算各学科总成绩
         if (null != studentList && studentList.size() > 0) {
-            Map<String,Object> studentMap = new HashMap<>();
+            List<Double> studentScoreList = new ArrayList<>();
             for (Student stu : studentList) {
                 Long stuId = stu.getId();
                 List<Score> scoreList = scoreRespository.findScoreByStudentIdAndYear(stuId, year, midOrEnd);
@@ -62,26 +62,30 @@ public class TeacherServiceImpl extends BaseServiceImpl implements TeacherServic
                             }
                             //找出所查学生的成绩
                             if (sco.getStudentId().equals(studentId)) {
-                                studentMap.put(sub.getSubjectNameEnglish(), sco.getScoreNumber());
+                                studentScoreList.add(sco.getScoreNumber());
                             }
                         }
                     }
                 }
             }
-            processResult.getData().put("student",studentMap);
+            processResult.getData().put("student",studentScoreList);
         }
         //放入各学科平均成绩
-        Map<String,Object> avg = new HashMap<>();
+        List<Double> avg = new ArrayList<>();
         List<String> subjectNames = new ArrayList<>();
+        List<String> compareData =  new ArrayList<>();
+        compareData.add("学生成绩");
+        compareData.add("班级平均成绩");
         for (Subject sub : subjectList) {
             String subName = sub.getSubjectNameEnglish();
             Double sum = Double.parseDouble(processResult.getData().get(subName).toString());
             processResult.getData().remove(subName);
-            avg.put(subName+"Avg", sum / studentList.size());
+            avg.add(sum / studentList.size());
             subjectNames.add(sub.getSubjectNameEnglish());
         }
         processResult.getData().put("Avg", avg);
         processResult.getData().put("subjectName",subjectNames);
+        processResult.getData().put("compareData",compareData);
         return processResult;
     }
 
