@@ -13,7 +13,8 @@ public enum CodeMessageConstants {
     SAVE_FAIL(507,"保存失败"),
     UPDATE_FAIL(508,"更新失败"),
     DELETE_FAIL(509,"删除失败"),
-    QUERY_FAIL(510,"查询失败");
+    QUERY_FAIL(510,"查询失败"),
+    SCORE_SIZE_LESS(511,"样本数据过于小，请完善相关成绩信息");
 
 
     private Integer status;

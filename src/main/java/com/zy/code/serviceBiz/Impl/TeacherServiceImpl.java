@@ -215,5 +215,106 @@ public class TeacherServiceImpl extends BaseServiceImpl implements TeacherServic
         return processResult;
     }
 
+    @Override
+    public ProcessResult predictStudentScore(Long studentId,Long schoolId) {
+        ProcessResult processResult = new ProcessResult();
+        StringBuffer predictMessage = new StringBuffer();
+        //状态为1 为良好  0 不好
+        Map<String,Integer> subjectStatus = new HashMap<>();
+        predictMessage.append("<center><strong>成绩报告</strong></center><br>");
+        predictMessage.append("您的成绩预测报告如下：<br>");
+        if (studentId == null) {
+            processResult.setStatus(CodeMessageConstants.PARAMNULL_ERROR.getStatus());
+            processResult.setMessage(CodeMessageConstants.PARAMNULL_ERROR.getMessage());
+            return processResult;
+        }
+        List<Subject> subjectList = subjectRespository.findBySchoolId(schoolId);
+        if (null == subjectList || subjectList.size() <= 0) {
+            processResult.setStatus(CodeMessageConstants.SERVER_ERROR.getStatus());
+            processResult.setMessage("请先填写学校科目");
+            return processResult;
+        }
+        List<Score> scoreList = scoreRespository.findScoreByStudentId(studentId);
+        if (scoreList.size()<=3){
+            processResult.setStatus(CodeMessageConstants.SCORE_SIZE_LESS.getStatus());
+            processResult.setMessage(CodeMessageConstants.SCORE_SIZE_LESS.getMessage());
+            return processResult;
+        }
+        scoreList.sort(new Comparator<Score>() {
+            @Override
+            public int compare(Score o1, Score o2) {
+                int returnValue = o1.getYear()-o2.getYear();
+                if (returnValue != 0){
+                    return  returnValue;
+                }else {
+                    return o1.getMidOrEnd()-o2.getMidOrEnd();
+                }
+            }
+        });
+        Map<String,Double> lastScoreMap = new HashMap<>();
+        for (Subject sub: subjectList) {
+            Double goodPercent = 0D;
+            for (Score sco:scoreList) {
+                if (!sub.getId().equals(sco.getSubjectId())){
+                    continue;
+                }
+                if (lastScoreMap.get(sub.getSubjectNameEnglish())== null){
+                    lastScoreMap.put(sub.getSubjectNameEnglish(),sco.getScoreNumber());
+                }else{
+                    Double lastScore = lastScoreMap.get(sub.getSubjectNameEnglish());
+                    lastScoreMap.put(sub.getSubjectNameEnglish(),lastScore + sco.getScoreNumber());
+                }
+                goodPercent += sco.getScoreNumber()/sub.getFullMarks();
+            }
+            Double line = goodPercent/subjectList.size();
+            if (line<=0.6){
+                predictMessage.append("您的"+sub.getSubjectName()+"成绩历史趋势不是很完美,有待于提高，加油！并注意调整学习方法。<br>");
+                subjectStatus.put(sub.getSubjectNameEnglish(),0);
+            }else if(line>0.6 && line<0.8){
+                predictMessage.append("您的"+sub.getSubjectName()+"成绩历史趋势为良好，请继续保持,加油！祝您成绩更上一层楼。<br>");
+                subjectStatus.put(sub.getSubjectNameEnglish(),1);
+            }else {
+                predictMessage.append("您的"+sub.getSubjectName()+"成绩历史趋势为优秀，请继续保持,加油！注意身体，培养其他兴趣爱好。<br>");
+                subjectStatus.put(sub.getSubjectNameEnglish(),1);
+            }
+        }
+        for (Map.Entry<String,Double> entry:lastScoreMap.entrySet()) {
+             String key = entry.getKey();
+             Double value = entry.getValue();
+             processResult.getData().put(key+"Avg",value/(scoreList.size()/subjectList.size()));
+        }
+        for (Subject s :subjectList) {
+            Double sum = 0D;
+            for (Score score:scoreList) {
+                if (s.getId().equals(score.getSubjectId())){
+                   Double subjectAvg = Double.parseDouble(processResult.getData().get(s.getSubjectNameEnglish()+"Avg").toString());
+                   sum =  (score.getScoreNumber()-subjectAvg)*(score.getScoreNumber()-subjectAvg);
+                }
+            }
+            Double d = Math.sqrt(sum/(scoreList.size()/subjectList.size()));
+            processResult.getData().put(s.getSubjectNameEnglish()+"variance",d);
+             Integer statu = subjectStatus.get(s.getSubjectNameEnglish());
+            if (d/s.getFullMarks()>0.2){
+                predictMessage.append("从"+s.getSubjectName()+"成绩的标准差来看,该科目成绩波动不大。<br>");
+                if (statu==0){
+                    predictMessage.append("综合以上信息,系统认为您下一次"+s.getSubjectName()+"科成绩,不太乐观，请努力！！<br>");
+                }else{
+                    predictMessage.append("综合以上信息,系统认为您下一次"+s.getSubjectName()+"科成绩,会很理想。<br>");
+                }
+            }else {
+                predictMessage.append("从" + s.getSubjectName() + "成绩的标准差来看,该科目成绩波动比较大。请注意<br>");
+                if (statu==0){
+                    predictMessage.append("综合以上信息,系统认为您下一次"+s.getSubjectName()+"科成绩,不太乐观，但请认真复习。认真作答试卷<br>");
+                }else{
+                    predictMessage.append("综合以上信息,系统认为您下一次"+s.getSubjectName()+"科成绩,比较理想，但请认真复习。认真作答试卷<br>");
+                }
+            }
+
+        }
+        processResult.setStatus(CodeMessageConstants.SUCCESS.getStatus());
+        processResult.getData().put("predictMessage",predictMessage.toString());
+        return processResult;
+    }
+
 
 }

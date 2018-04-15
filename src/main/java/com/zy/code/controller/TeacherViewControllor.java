@@ -144,4 +144,12 @@ public class TeacherViewControllor extends BaseControllor {
         return processResult;
     }
 
+
+    @RequestMapping(value = "predictScoreByStudentId",method = RequestMethod.GET)
+    public @ResponseBody ProcessResult predictScoreByStudentId(@RequestParam(value = "classInSchoolId", required = false) Long classInSchoolId,
+                                                              @RequestParam(value = "schoolId", required = false) Long schoolId,
+                                                              @RequestParam(value = "studentId", required = false) Long studentId){
+        ProcessResult processResult = teacherService.predictStudentScore(studentId,schoolId);
+        return processResult;
+    }
 }

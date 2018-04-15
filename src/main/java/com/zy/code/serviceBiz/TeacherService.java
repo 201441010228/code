@@ -14,4 +14,6 @@ public interface TeacherService {
 
     ProcessResult getHistoryViewByStudentId(Long studentId,Long schoolId);
 
+    ProcessResult predictStudentScore(Long studentId,Long schoolId);
+
 }

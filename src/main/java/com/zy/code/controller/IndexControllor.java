@@ -46,6 +46,14 @@ public class IndexControllor extends BaseControllor{
         return "teacherView/studentHistory";
     }
 
+    @RequestMapping(value = "/topredictScore",method = RequestMethod.GET)
+    public String topredictScore(ModelMap modelMap){
+        ProcessResult processResult = adminService.getSchoolList();
+        List<School> schoolList = (List<School>)processResult.getData().get("schoolList");
+        modelMap.addAttribute("schoolList",schoolList);
+        return "teacherView/predictScore";
+    }
+
     @RequestMapping(value = "/tologinSuccess",method = RequestMethod.GET)
     public String tologinSuccess(){
         return "admin/loginSuccess";
