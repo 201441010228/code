@@ -32,6 +32,7 @@
                        alert(result.message);
                        return;
                    }
+                   alert(result.data.subjectNames);
                    //指定图标的配置和数据
                    option = {
                        tooltip : {
@@ -42,7 +43,7 @@
                            feature : {
                                mark : {show: true},
                                dataView : {show: true, readOnly: false},
-                               magicType: {show: true, type: ['bar', 'line']},
+                               magicType: {show: true, type: ['bar', 'line','tiled']},
                                restore : {show: true},
                                saveAsImage : {show: true}
                            }
@@ -165,7 +166,7 @@
             <button type="button" class="btn btn-info btn-lg"  onclick="window.location.href='/tologinSuccess'">返回</button>
         </div>
     </div>
-    <div id="chartmain" style="width: 1000px; height: 1000px;"></div>
+    <div id="chartmain" style="width: 800px; height: 800px;"></div>
 </div>
 
 </body>

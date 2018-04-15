@@ -14,7 +14,8 @@ public class adminControllor extends BaseControllor {
 
 
     @RequestMapping(value = "/registSchool",method = RequestMethod.GET)
-    public String registSchool(@RequestParam(value = "schoolName",required = false) String schoolName,
+    public String registSchool( @RequestParam(value = "id",required = false) Long id,
+                          @RequestParam(value = "schoolName",required = false) String schoolName,
                          @RequestParam(value = "province",required = false) String province,
                          @RequestParam(value = "city",required = false) String city,
                          @RequestParam(value = "area",required = false) String area,
@@ -22,6 +23,7 @@ public class adminControllor extends BaseControllor {
                          @RequestParam(value = "phoneNumber",required = false) String phoneNumber
     ){
         School school = new School();
+        school.setId(id);
         school.setSchoolName(schoolName);
         school.setProvince(province);
         school.setCity(city);
@@ -40,7 +42,8 @@ public class adminControllor extends BaseControllor {
 
 
     @RequestMapping(value = "/registTeacher",method = RequestMethod.GET)
-    public String registTeacher(@RequestParam(value = "teacherName",required = false) String teacherName,
+    public String registTeacher( @RequestParam(value = "id",required = false) Long id,
+                                @RequestParam(value = "teacherName",required = false) String teacherName,
                                 @RequestParam(value = "province", required = false) String province,
                                 @RequestParam(value = "city", required = false) String city,
                                 @RequestParam(value = "area", required = false) String area,
@@ -50,6 +53,7 @@ public class adminControllor extends BaseControllor {
                                 @RequestParam(value = "sex", required = false) Integer sex,
                                 @RequestParam(value = "schoolId", required = false) Long schoolId){
         Teacher teacher = new Teacher();
+        teacher.setId(id);
         teacher.setTeacherName(teacherName);
         teacher.setProvince(province);
         teacher.setCity(city);
@@ -68,13 +72,16 @@ public class adminControllor extends BaseControllor {
 
 
     @RequestMapping(value = "/registClass",method = RequestMethod.GET)
-    public String registClass(@RequestParam(value = "className",required = false) String className,
+    public String registClass(
+                              @RequestParam(value = "id",required = false) Long id,
+                              @RequestParam(value = "className",required = false) String className,
                               @RequestParam(value = "schoolId", required = false) Long schoolId,
                               @RequestParam(value = "chineseTeacherId", required = false) Long chineseTeacherId,
                               @RequestParam(value = "mathTeacherId", required = false) Long mathTeacherId,
                               @RequestParam(value = "englishTeacherId", required = false) Long englishTeacherId,
                               @RequestParam(value = "teacherId", required = false) Long teacherId){
         ClassInSchool classInSchool = new ClassInSchool();
+        classInSchool.setId(id);
         classInSchool.setTeacherId(teacherId);
         classInSchool.setChineseTeacherId(chineseTeacherId);
         classInSchool.setMathTeacherId(mathTeacherId);
@@ -110,8 +117,10 @@ public class adminControllor extends BaseControllor {
                                 @RequestParam(value = "sex", required = false) Integer sex,
                                 @RequestParam(value = "schoolId", required = false) Long schoolId,
                                 @RequestParam(value = "classInSchoolId", required = false) Long classInSchoolId,
-                                @RequestParam(value = "year", required = false) Integer year){
+                                @RequestParam(value = "year", required = false) Integer year,
+                                @RequestParam(value = "id",required = false) Long id){
         Student student = new Student();
+        student.setId(id);
         student.setStudentName(studentName);
         student.setProvince(province);
         student.setCity(city);
@@ -130,37 +139,6 @@ public class adminControllor extends BaseControllor {
         return "error";
     }
 
-
-
-
-
-    @GetMapping(value = "/saveStudent")
-    public String saveStudent(){
-        Student student = new Student();
-        adminService.saveStudent(student);
-        return "success";
-    }
-
-    @GetMapping(value = "/saveTeacher")
-    public String saveTeacher(){
-        Teacher teacher = new Teacher();
-        adminService.saveTeacher(teacher);
-        return "success";
-    }
-
-    @GetMapping(value = "/saveSchool")
-    public String saveSchool(){
-        School school = new School();
-        adminService.saveSchool(school);
-        return "success";
-    }
-
-    @GetMapping(value = "/saveClassInSchool")
-    public String saveClassInSchool(){
-        ClassInSchool classInSchool = new ClassInSchool();
-        adminService.saveClassInSchool(classInSchool);
-        return "success";
-    }
 
     @GetMapping(value = "/saveScore")
     public String saveScore(@RequestParam(value = "schoolId", required = false) Long schoolId,
@@ -188,12 +166,5 @@ public class adminControllor extends BaseControllor {
             adminService.saveScore(score);
         }
         return "admin/loginSuccess";
-    }
-
-    @GetMapping(value = "/saveSubject")
-    public String saveSubject(){
-        Subject subject = new Subject();
-        adminService.saveSubject(subject);
-        return "success";
     }
 }

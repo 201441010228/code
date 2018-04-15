@@ -24,4 +24,7 @@ public interface ScoreRespository extends JpaRepository<Score,Long> {
     @Query("select score from Score score where score.studentId =:studentId and score.subjectId =:subjectId")
     List<Score> findScoreByStudentIdAndSubjectId(@Param("studentId") Long studentId, @Param("subjectId") Long subjectId);
 
+
+    List<Score> findScoreByStudentId(@Param("studentId") Long studentId);
+
 }

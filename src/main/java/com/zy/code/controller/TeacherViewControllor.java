@@ -121,6 +121,27 @@ public class TeacherViewControllor extends BaseControllor {
         return processResult;
     }
 
+    @RequestMapping(value = "/findAllClassesBySchoolId",method = RequestMethod.GET)
+    public @ResponseBody ModelMap findAllClasses(@RequestParam(value = "schoolId", required = false) Long schoolId){
+        ModelMap modelMap = new ModelMap();
+        modelMap.addAttribute("classList",adminService.getClassListBySchoolId(schoolId).getData().get("classList"));
+        return modelMap;
+    }
 
+    @RequestMapping(value = "/findAllStudentByClassId",method = RequestMethod.GET)
+    public @ResponseBody ModelMap findAllStudents(@RequestParam(value = "classId", required = false) Long classId){
+        ModelMap modelMap = new ModelMap();
+        modelMap.addAttribute("studentList",adminService.getAllStudentByClassInSchoolId(classId));
+        return modelMap;
+    }
+
+
+    @RequestMapping(value = "/historyViewByStudentId",method = RequestMethod.GET)
+    public @ResponseBody ProcessResult historyViewByStudentId(@RequestParam(value = "classInSchoolId", required = false) Long classInSchoolId,
+                                                          @RequestParam(value = "schoolId", required = false) Long schoolId,
+                                                          @RequestParam(value = "studentId", required = false) Long studentId){
+        ProcessResult processResult = teacherService.getHistoryViewByStudentId(studentId,schoolId);
+        return processResult;
+    }
 
 }

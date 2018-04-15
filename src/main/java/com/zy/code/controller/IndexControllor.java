@@ -38,6 +38,14 @@ public class IndexControllor extends BaseControllor{
         return "teacherView/chooseAvgView";
     }
 
+    @RequestMapping(value = "/tohistoryView",method = RequestMethod.GET)
+    public String tohistoryView(ModelMap modelMap){
+        ProcessResult processResult = adminService.getSchoolList();
+        List<School> schoolList = (List<School>)processResult.getData().get("schoolList");
+        modelMap.addAttribute("schoolList",schoolList);
+        return "teacherView/studentHistory";
+    }
+
     @RequestMapping(value = "/tologinSuccess",method = RequestMethod.GET)
     public String tologinSuccess(){
         return "admin/loginSuccess";

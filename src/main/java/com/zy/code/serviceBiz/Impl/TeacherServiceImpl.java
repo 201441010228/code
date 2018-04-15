@@ -84,7 +84,7 @@ public class TeacherServiceImpl extends BaseServiceImpl implements TeacherServic
             subjectNames.add(sub.getSubjectNameEnglish());
         }
         processResult.getData().put("Avg", avg);
-        processResult.getData().put("subjectName",subjectNames);
+        processResult.getData().put("subjectNames",subjectNames);
         processResult.getData().put("compareData",compareData);
         return processResult;
     }
@@ -160,6 +160,58 @@ public class TeacherServiceImpl extends BaseServiceImpl implements TeacherServic
         processResult.setStatus(CodeMessageConstants.SUCCESS.getStatus());
         processResult.setMessage(CodeMessageConstants.SUCCESS.getMessage());
         processResult.getData().put("totalNumList", totalNum);
+        return processResult;
+    }
+
+    @Override
+    public ProcessResult getHistoryViewByStudentId(Long studentId,Long schoolId) {
+        ProcessResult processResult = new ProcessResult();
+        List<String> subjects = new ArrayList<>();
+        List<Map<String,Object>> services = new ArrayList<>();
+        if (studentId == null || schoolId == null ) {
+            processResult.setStatus(CodeMessageConstants.PARAMNULL_ERROR.getStatus());
+            processResult.setMessage(CodeMessageConstants.PARAMNULL_ERROR.getMessage());
+            return processResult;
+        }
+        List<Subject> subjectList = subjectRespository.findBySchoolId(schoolId);
+        if (null == subjectList || subjectList.size() <= 0) {
+            processResult.setStatus(CodeMessageConstants.SERVER_ERROR.getStatus());
+            processResult.setMessage("请先填写学校科目");
+            return processResult;
+        }
+        List<Score> scoreList = scoreRespository.findScoreByStudentId(studentId);
+        scoreList.sort(new Comparator<Score>() {
+            @Override
+            public int compare(Score o1, Score o2) {
+                 int returnValue = o1.getYear()-o2.getYear();
+                if (returnValue != 0){
+                    return  returnValue;
+                }else {
+                     return o1.getMidOrEnd()-o2.getMidOrEnd();
+                }
+            }
+        });
+        for (Subject subject: subjectList) {
+            List<Double> scores = new ArrayList<>();
+            Map<String,Object> map = new HashMap<>();
+            map.put("name",subject.getSubjectNameEnglish());
+            map.put("type","line");
+            for (Score sco:scoreList) {
+                if (sco.getSubjectId().equals(subject.getId())){
+                    scores.add(sco.getScoreNumber());
+                }
+            }
+            map.put("data",scores);
+            services.add(map);
+            subjects.add(subject.getSubjectNameEnglish());
+        }
+        processResult.getData().put("series",services);
+        Set<String> dateList = new LinkedHashSet<>();
+        for (Score sco:scoreList) {
+            dateList.add(sco.getYear().toString()+(sco.getMidOrEnd()==0?" Midsemester":" Final exam"));
+        }
+        processResult.getData().put("dateList",dateList);
+        processResult.getData().put("subjectNames",subjects);
         return processResult;
     }
 

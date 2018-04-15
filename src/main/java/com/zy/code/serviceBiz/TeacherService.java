@@ -12,4 +12,6 @@ public interface TeacherService {
 
     ProcessResult getOrders(Long classInSchoolId,Integer year,Integer midOrEnd);
 
+    ProcessResult getHistoryViewByStudentId(Long studentId,Long schoolId);
+
 }
