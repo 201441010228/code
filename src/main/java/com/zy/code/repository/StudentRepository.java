@@ -15,8 +15,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     @Modifying
     @Transactional
-    @Query("select s from Student s where s.classInSchoolId =:classInSchoolId and s.year =:year")
-    List<Student> findStudentByClassInSchoolIdAndYear(@Param("classInSchoolId") Long classInSchoolId,@Param("year")  Integer year);
+    @Query("select s from Student s where s.classInSchoolId =:classInSchoolId")
+    List<Student> findStudentByClassInSchoolId(@Param("classInSchoolId") Long classInSchoolId);
 
     List<Student> findByClassInSchoolId(Long id);
 }

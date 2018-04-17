@@ -42,7 +42,7 @@ public class TeacherServiceImpl extends BaseServiceImpl implements TeacherServic
             return processResult;
         }
         processResult.getData().put("subjects", subjectList);
-        List<Student> studentList = studentRepository.findStudentByClassInSchoolIdAndYear(classInSchoolId, year);
+        List<Student> studentList = studentRepository.findStudentByClassInSchoolId(classInSchoolId);
         //计算各学科总成绩
         if (null != studentList && studentList.size() > 0) {
             List<Double> studentScoreList = new ArrayList<>();
@@ -145,7 +145,7 @@ public class TeacherServiceImpl extends BaseServiceImpl implements TeacherServic
             processResult.setMessage(CodeMessageConstants.PARAMNULL_ERROR.getMessage());
             return processResult;
         }
-        List<Student> studentList = studentRepository.findStudentByClassInSchoolIdAndYear(classInSchoolId, year);
+        List<Student> studentList = studentRepository.findStudentByClassInSchoolId(classInSchoolId);
         List<Map<String, Double>> totalNum = new ArrayList<>();
         for (Student student : studentList) {
             Map<String, Double> map = new HashMap<>();
