@@ -1,30 +1,30 @@
-server:
-  port: 8080
-spring:
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/design?characterEncoding=utf-8&useSSL=false
-    username: scott
-    password: admin
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-  devtools:
-    restart:
-      enabled: true
-      exclude: static
-  spring:
-   thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html
-    mode: HTML5
-    encoding: utf-8
-    cache: true
-    content-type: text/html
-
-
-
-
-
-
+#server:
+#  port: 8080
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://127.0.0.1:3306/design?characterEncoding=utf-8&useSSL=false
+#    username: scott
+#    password: admin
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#  devtools:
+#    restart:
+#      enabled: true
+#      exclude: static
+#  spring:
+#   thymeleaf:
+#    prefix: classpath:/templates/
+#    suffix: .html
+#    mode: HTML5
+#    encoding: utf-8
+#    cache: true
+#    content-type: text/html
+#
+#
+#
+#
+#
+#
